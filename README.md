@@ -22,3 +22,24 @@ The CI workflow in this repository builds and publishes images to Docker Hub:
 - **Tags**:
   - `latest`
   - `sha-<full_git_sha>`
+
+## Use this image with the official Helm chart
+
+This image is intended to be used with the official
+[`actions-runner-controller` Helm chart](https://github.com/actions/actions-runner-controller/tree/master/charts/actions-runner-controller).
+
+Update your chart values to point the runner image at `siryur/github-runners`.
+The exact key depends on the chart version you’re on, but the common pattern is:
+
+```yaml
+image:
+  actionsRunnerRepositoryAndTag: siryur/github-runners:latest # or: sha-<full_git_sha>
+```
+
+Then apply it (example):
+
+```bash
+helm upgrade --install actions-runner-controller actions-runner-controller/actions-runner-controller \
+  --namespace actions-runner-system --create-namespace \
+  -f values.yaml
+```
